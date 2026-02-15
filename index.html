@@ -7,142 +7,712 @@
   <style>
     :root{
       --bg:#0b0c10; --card:#12141b; --muted:#9aa3b2; --text:#eef2ff;
-      --line:#232738; --accent:#7dd3fc; --accent2:#a7f3d0; --chip:#1a1f2f;
+      --line:#232738; --accent:#7dd3fc; --accent2:#a7f3d0;
+      --chip:#1a1f2f;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;background:linear-gradient(180deg,#0b0c10,#0f1220);color:var(--text)}
     header{position:sticky;top:0;z-index:10;background:rgba(11,12,16,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .wrap{max-width:980px;margin:0 auto;padding:14px}
-    h1{margin:6px 0 2px;font-size:18px}
+    .wrap{max-width:980px;margin:0 auto;padding:14px 14px}
+    h1{margin:6px 0 2px;font-size:18px;letter-spacing:.2px}
     .sub{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
+
     .tabs{display:flex;gap:8px;overflow:auto;padding:10px 14px 12px}
-    .tab{white-space:nowrap;border:1px solid var(--line);background:transparent;color:var(--text);padding:8px 10px;border-radius:999px;font-size:12px;cursor:pointer}
+    .tab{white-space:nowrap;border:1px solid var(--line);background:transparent;color:var(--text);padding:8px 10px;border-radius:999px;font-size:12px}
     .tab.active{background:rgba(125,211,252,.12);border-color:rgba(125,211,252,.35)}
+
     main{padding:14px 14px 80px}
     .day{margin:18px auto 26px;max-width:980px}
     .day h2{font-size:16px;margin:0 0 10px}
     .meta{color:var(--muted);font-size:12px;margin:0 0 12px;line-height:1.5}
+
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
     @media (min-width:880px){.grid{grid-template-columns:1fr 1fr}}
+
     .card{background:rgba(18,20,27,.92);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .img{aspect-ratio:16/9;background:#111;overflow:hidden}
-    .img img{width:100%;height:100%;object-fit:cover;display:block}
+    .img{aspect-ratio:16/9;background:#0a0a0a;overflow:hidden}
+    .img img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05)}
     .content{padding:12px 12px 14px}
     .title{display:flex;gap:8px;align-items:flex-start}
     .title h3{margin:0;font-size:15px;line-height:1.25}
     .badge{margin-top:2px;font-size:11px;padding:3px 8px;border-radius:999px;background:var(--chip);border:1px solid var(--line);color:var(--muted)}
     .desc{margin:8px 0 10px;color:#d8deea;font-size:13px;line-height:1.55}
+
     .row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 10px}
     a.btn{display:inline-flex;gap:6px;align-items:center;text-decoration:none;color:var(--text);border:1px solid var(--line);background:rgba(255,255,255,.02);padding:8px 10px;border-radius:12px;font-size:12px}
     a.btn.primary{border-color:rgba(125,211,252,.4);background:rgba(125,211,252,.10)}
     a.btn.good{border-color:rgba(167,243,208,.35);background:rgba(167,243,208,.10)}
-    .chipline{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .chip{font-size:12px;color:var(--muted);border:1px dashed rgba(154,163,178,.35);padding:6px 10px;border-radius:999px}
+
     details{border-top:1px solid var(--line);padding-top:10px}
     summary{cursor:pointer;color:var(--accent);font-size:13px;list-style:none}
     summary::-webkit-details-marker{display:none}
     .info{margin:10px 0 0;color:#d8deea;font-size:13px;line-height:1.65}
+    .chipline{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{font-size:12px;color:var(--muted);border:1px dashed rgba(154,163,178,.35);padding:6px 10px;border-radius:999px}
+
     .foot{position:fixed;left:0;right:0;bottom:0;background:rgba(11,12,16,.92);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
     .foot .wrap{display:flex;gap:10px;align-items:center;justify-content:space-between}
+    .hint{font-size:12px;color:var(--muted);line-height:1.4}
     .smallbtn{border:1px solid var(--line);background:transparent;color:var(--text);padding:9px 10px;border-radius:12px;font-size:12px}
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <h1>老爸老媽自由行｜2/23–3/04（手機可點、長輩好懂）</h1>
-    <p class="sub">每站：圖片＋導航＋搭車步驟＋建議時間＋餐廳 Tabelog 連結。</p>
-  </div>
-  <div class="tabs" id="tabs"></div>
-</header>
+  <header>
+    <div class="wrap">
+      <h1>老爸老媽自由行｜2/23–3/04（手機可點、長輩好懂）</h1>
+      <p class="sub">每站：圖片＋導航＋搭車步驟＋建議出發/回程＋停留時間。平台可能臨時調整，抵達車站後以現場指示牌與站務公告為準。</p>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </header>
 
-<main id="app"></main>
+  <main id="app"></main>
 
-<div class="foot">
-  <div class="wrap">
-    <div style="font-size:12px;color:var(--muted)">點「導航到搭車點」→ 跟著藍點走到入口 → 看現場指標。</div>
-    <button class="smallbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到最上面</button>
+  <div class="foot">
+    <div class="wrap">
+      <div class="hint">小技巧：點「導航到搭車點」→ 到站後照「往○○方向 / ○○線」走，跟著顏色與英文站名就不會迷路。</div>
+      <button class="smallbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到最上面</button>
+    </div>
   </div>
-</div>
 
 <script>
-const gm = (q)=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-// 圖片來源改用 Wikimedia Redirect（自動導到正確檔案路徑，最穩）
-const wm = (file)=>`https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}?width=1600`;
+  // Google Maps 可點連結（不依賴短網址）
+  // Google Maps 可點連結（不依賴短網址）
+  const gm = (q) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
-const data=[
-{
- id:"d226",
- title:"2/26（四）名古屋→小倉（帶2大行李）＋燒肉",
- note:"JR Pass、新幹線最後一排劃位、JR Station Hotel Kokura 直結動線。",
- cards:[
- {
-  place:"名古屋 → 小倉（新幹線）",
-  badge:"移動重點",
-  img:wm("3/3a/Shinkansen_N700A_series.jpg"),
-  imgSource:"Wikimedia",
-  map:gm("JR Nagoya Station"),
-  board:gm("Nagoya Station Taiko-dori Exit"),
-  go:"08:30 到名古屋站",
-  stay:"約2小時50分",
-  back:"中午抵達小倉",
-  view:"入口走太閤通口，全程找電梯符號。",
-  ride:[
-   "JR Pass到みどりの窓口劃位",
-   "要求最後一排（oversized baggage）",
-   "行李>160cm需超大行李座位",
-   "小倉下車找新幹線口→Hotel指標"
-  ]
- },
- {
-  place:"焼肉の龍園 小倉本店",
-  badge:"燒肉",
-  img:wm("6/64/Yakiniku.jpg"),
-  imgSource:"Wikimedia",
-  map:gm("焼肉の龍園 小倉本店"),
-  board:gm("Kokura Station"),
-  tabelog:"https://tabelog.com/fukuoka/A4004/A400401/40001673/",
-  go:"19:00",
-  stay:"1.5小時",
-  back:"回飯店",
-  view:"黑毛和牛，重口味很有爽感。",
-  ride:["計程車8–10分鐘"]
- }
- ]
-}
-];
+  // 直接開「路線導航」（手機最直覺）：from 可省略（用目前位置）
+  const gdir = ({from, to, mode="transit"}) => {
+    const base = "https://www.google.com/maps/dir/?api=1";
+    const params = new URLSearchParams();
+    if (from) params.set("origin", from);
+    params.set("destination", to);
+    params.set("travelmode", mode);
+    return `${base}&${params.toString()}`;
+  };
 
-const tabs=document.getElementById("tabs");
-const app=document.getElementById("app");
+  // Wikimedia 圖片（用 Special:FilePath 最穩）
+  const wm = (file) => `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}`;
 
-function render(id){
- tabs.innerHTML=data.map(d=>`<button class="tab ${d.id===id?'active':''}" onclick="render('${d.id}')">${d.title}</button>`).join('');
- const day=data.find(d=>d.id===id);
- app.innerHTML=`<section class="day"><h2>${day.title}</h2><p class="meta">${day.note}</p><div class="grid">${day.cards.map(card).join('')}</div></section>`;
-}
+  const data = [
+    {
+      id:"d223",
+      title:"2/23（一）名古屋｜犬山城＋高空夜景＋拉麵",
+      note:"主題：木曾川全景、城下町小吃、戶外 360 夜景，晚上吃一碗濃的收尾。",
+      cards:[
+        {
+          place:"犬山城（俯瞰木曾川）",
+          badge:"風景優先",
+          img: wm("InuyamaCastle.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Inuyama Castle") ,
+          board: gm("Meitetsu Nagoya Station") ,
+          go:"08:30 從名古屋出發（人少、光線好）",
+          stay:"停留 1.5–2 小時（含上天守拍照）",
+          back:"12:00–12:30 回到名古屋市區",
+          view:"天守閣視野完全無遮蔽，木曾川像銀帶延伸；樓梯陡但值得。",
+          flow:["名鐵名古屋站入口","名鐵月台（犬山/新鵜沼方向）","犬山站","步行到犬山城"],
+          navs:[
+            {label:"導航到名鐵名古屋站入口", to:"Meitetsu Nagoya Station", mode:"walking"},
+            {label:"名鐵名古屋站→犬山站（大眾運輸）", from:"Meitetsu Nagoya Station", to:"Inuyama Station", mode:"transit"},
+            {label:"犬山站→犬山城（步行導航）", from:"Inuyama Station", to:"Inuyama Castle", mode:"walking"}
+          ],
+          ride:[
+            "搭車起點：名鐵『名鐵名古屋站（Meitetsu Nagoya）』，不是 JR。",
+            "在站內找：『犬山（Inuyama）／新鵜沼（Shin-Unuma）方向』指示。",
+            "搭乘：名鐵犬山線的『特急（Limited Express）』或『快速急行（Rapid Express）』前往『犬山站（Inuyama）』，約 30–35 分鐘。",
+            "抵達犬山站後：跟著『犬山城（Inuyama Castle）』路標步行約 15 分鐘。",
+            "回程同路線回到名鐵名古屋站。"
+          ]
+        },
+        {
+          place:"Midland Square｜Sky Promenade（戶外展望台）",
+          badge:"夜景",
+          img: wm("Midland_Square_Sky_Promenade.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Midland Square Sky Promenade") ,
+          board: gm("Nagoya Station") ,
+          go:"18:30–19:00 上樓（夜景最舒服的時段）",
+          stay:"停留 45–60 分鐘",
+          back:"20:00 前回飯店／名古屋站地下街吃晚餐",
+          view:"戶外 360 度環繞步道，吹自然風看名古屋燈海；風大記得保暖。",
+          ride:[
+            "位置：名古屋站旁、步行可達。",
+            "走法：在名古屋站一帶跟著『Midland Square』指標走即可（與車站商場動線相通）。"
+          ]
+        },
+        {
+          place:"ラーメン横綱 名古屋伏見店（晚餐｜濃口拉麵）",
+          badge:"拉麵",
+          img: "https://upload.wikimedia.org/wikipedia/commons/2/27/Tonkotsu_Ramen.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("ラーメン横綱 名古屋伏見店") ,
+          board: gm("Fushimi Station Nagoya") ,
+          tabelog: "https://tabelog.com/aichi/A2301/A230102/23070099/",
+          go:"20:00 前後（看夜景後）",
+          stay:"45–60 分鐘",
+          back:"用餐後回飯店",
+          view:"湯頭與調味都偏重口味；想加蒜或葱也很過癮。",
+          ride:[
+            "從名古屋站：搭地鐵到『伏見站（Fushimi）』，出站步行約 3–5 分鐘。"
+          ]
+        }
+      ]
+    },
 
-function card(c){
- return `<article class="card">
- <div class=\"img\"><img src=\"${c.img}\" alt=\"${c.place}\" loading=\"lazy\" referrerpolicy=\"no-referrer\"><\/div>
- <div class="content">
- <div class="title"><h3>${c.place}</h3><span class="badge">${c.badge||''}</span></div>
- <div class="desc">${c.view||''}</div>
- <div class="chipline">
- <span class="chip">出發：${c.go||''}</span>
- <span class="chip">停留：${c.stay||''}</span>
- <span class="chip">回程：${c.back||''}</span>
- </div>
- <div class=\"row\">
- <a class=\"btn primary\" href=\"${c.map}\" target=\"_blank\">導航到景點</a>
- <a class=\"btn good\" href=\"${c.board}\" target=\"_blank\">導航到搭車點</a>
- ${c.tabelog?`<a class=\"btn\" href=\"${c.tabelog}\" target=\"_blank\">Tabelog</a>`:''}
- <a class=\"btn\" href=\"${c.img}\" target=\"_blank\">開圖片</a>
- </div>
- <details><summary>搭車方式</summary><div class="info">${(c.ride||[]).map(x=>'• '+x).join('<br>')}</div></details>
- </div></article>`;
-}
+    {
+      id:"d224",
+      title:"2/24（二）名古屋｜名城公園＋久屋大通公園＋天婦羅",
+      note:"主題：護城河散步、城市綠帶咖啡，晚上吃炸得很爽的天婦羅。",
+      cards:[
+        {
+          place:"名城公園（看名古屋城外觀＋護城河）",
+          badge:"散步",
+          img: wm("Nagoya_Castle_from_Meijo_Park.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Meijo Park") ,
+          board: gm("Nagoya Station") ,
+          go:"09:30 抵達開始散步",
+          stay:"停留 1–1.5 小時",
+          back:"11:30 左右回市區／午餐",
+          view:"不進城內，只看外觀與護城河倒影；空間寬、走起來不擠。",
+          ride:[
+            "從名古屋站：搭地鐵到『名城公園站（Meijo Koen）』最直覺。",
+            "站內找：地鐵『名城線（Meijo Line）』方向指示。",
+            "出站後：依『Meijo Park』路標步行 5–10 分鐘。"
+          ]
+        },
+        {
+          place:"久屋大通公園（含 MIRAI TOWER 周邊綠帶）",
+          badge:"咖啡休息",
+          img: wm("Hisaya-odori_Park_under_Nagoya_TV_Tower_-_1.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Hisaya Odori Park") ,
+          board: gm("Hisaya-odori Station") ,
+          go:"13:30 開始（午後慢逛最舒服）",
+          stay:"停留 1.5–2 小時（含咖啡）",
+          back:"16:00 左右回名古屋站／Esca 地下街晚餐",
+          view:"超長城市綠帶，累了就坐下看噴水池與塔景，長輩友善。",
+          ride:[
+            "搭地鐵到『久屋大通站（Hisaya-odori）』，出站地面就是公園帶。"
+          ]
+        },
+        {
+          place:"光村（晚餐｜天婦羅重口味）",
+          badge:"天婦羅",
+          img: "https://upload.wikimedia.org/wikipedia/commons/2/26/Tenpura_mori.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("光村 みつむら 名古屋") ,
+          board: gm("Shimizu Station Nagoya") ,
+          tabelog: "https://tabelog.com/aichi/A2301/A230110/23000086/",
+          go:"18:00–19:00",
+          stay:"60–90 分鐘",
+          back:"吃完回飯店",
+          view:"炸衣香、醬汁也偏濃口，適合喜歡重口味與炸物。",
+          ride:[
+            "名鐵瀨戶線『清水站（Shimizu）』步行約 4 分鐘。",
+            "不想轉乘：直接搭計程車最省心。"
+          ]
+        }
+      ]
+    },
 
-render(data[0].id);
+    {
+      id:"d225",
+      title:"2/25（三）名古屋｜惠那峽遊船（坐著看奇岩）",
+      note:"主題：JR 中央本線出發、湖上近距離看兩岸奇岩，長輩最愛的『坐著看風景』。",
+      cards:[
+        {
+          place:"惠那峽（Ena Gorge）遊覽船",
+          badge:"船＋湖景",
+          img: wm("Enakyo_Bridge.JPG"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Ena Gorge") ,
+          board: gm("JR Nagoya Station") ,
+          go:"08:30 從名古屋出發（預留轉乘）",
+          stay:"總停留 2.5–3 小時（船 30 分鐘＋周邊散步）",
+          back:"14:30–15:00 往回搭車，16:30 前回名古屋",
+          view:"噴射船靠近岩壁，冬季空氣清澈、湖水深藍，很『坐著就震撼』。",
+          flow:["名古屋站JR入口","JR中央本線月台（往中津川）","惠那站","巴士/計程車到惠那峽"],
+          navs:[
+            {label:"導航到JR名古屋站入口", to:"JR Nagoya Station", mode:"walking"},
+            {label:"名古屋站→惠那站（大眾運輸）", from:"JR Nagoya Station", to:"Ena Station", mode:"transit"},
+            {label:"惠那站→惠那峽（巴士/計程車）", from:"Ena Station", to:"Ena Gorge", mode:"driving"}
+          ],
+          ride:[
+            "搭車起點：名古屋站『JR』區域。",
+            "搭乘：『JR 中央本線（Chuo Main Line）』往『中津川（Nakatsugawa）』方向，於『惠那站（Ena）』下車（約 60 分鐘上下）。",
+            "出站後：搭巴士或計程車前往『恵那峡（Enakyo）』，約 15–20 分鐘。",
+            "回程同路線回到名古屋站。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d226",
+      title:"2/26（四）小倉｜名古屋→小倉（帶行李）＋庭園午茶＋河岸散步",
+      note:"主題：新幹線移動日（2人＋2大行李箱、JR Pass）—『電梯/出口』版本，先進 JR Station Hotel Kokura 放行李再出門。",
+      cards:[
+        {
+          place:"名古屋 → 小倉（JR Pass／2大行李箱｜電梯＆出口動線）",
+          badge:"移動教學",
+          img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Shinkansen_N700A_series.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("JR Nagoya Station") ,
+          board: gm("Nagoya Station Taiko-dori Exit") ,
+          go:"建議 08:30 抵達名古屋站（先把行李動線走順）",
+          stay:"新幹線約 2 小時 50 分（含停靠）",
+          back:"中午前後抵達小倉 → 先進飯店放行李",
+          view:"關鍵只有兩個：『入口選太閤通口』＋『全程找電梯符號』，你就會像帶團導遊一樣穩。",
+          flow:["名古屋站 太閤通口（Taiko-dori／西側）","新幹線改札（銀時計附近）","電梯上新幹線月台","小倉站 新幹線口（北口側）","電梯→連通通道→JR Station Hotel Kokura"],
+          navs:[
+            {label:"導航到名古屋站太閤通口（西側）", to:"Nagoya Station Taiko-dori Exit", mode:"walking"},
+            {label:"名古屋→小倉（大眾運輸）", from:"JR Nagoya Station", to:"Kokura Station", mode:"transit"},
+            {label:"導航到JR Station Hotel Kokura", to:"JR Kyushu Station Hotel Kokura", mode:"walking"}
+          ],
+          ride:[
+            "【進站入口】走『太閤通口 Taiko-dori（西側）』進名古屋站：離新幹線最近、推行李最少轉彎。",
+            "【找新幹線】跟『Shinkansen／新幹線』指標走，往『銀時計（Silver Clock）』方向就是新幹線改札區。",
+            "【JR Pass 劃位】到『みどりの窓口（綠色窗口）』：出示 JR Pass，說『2個大行李箱，想要最後一排（oversized baggage）』。",
+            "【超大行李規則】行李三邊合計 >160cm 建議一定要劃『超大行李區座位』；避免被要求換位或補費。",
+            "【上月台】過改札後只找『電梯／無障礙』符號上月台（不要走樓梯）。",
+            "【到小倉站】下車後找『新幹線口（北口側）』→ 走電梯下到連通層。",
+            "【到飯店】跟著『Hotel／Station Hotel』指標，JR Station Hotel Kokura 車站直結，基本 1–3 分鐘到。",
+            "【車上放行李】能上行李架就上；太大就放最後一排後方（需劃位）。"
+          ]
+        },
+        {
+          place:"JR Station Hotel Kokura（入住/放行李｜直結車站）",
+          badge:"換飯店",
+          img: "https://upload.wikimedia.org/wikipedia/commons/7/71/JR_Kyushu_Hotel_Kokura.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("JR Kyushu Station Hotel Kokura") ,
+          board: gm("Kokura Station") ,
+          go:"抵達小倉後第一站",
+          stay:"20–40 分鐘（寄放/Check-in）",
+          back:"放完行李再出門",
+          view:"你們帶兩個大行李箱，先把『重量』交給飯店，接下來整天都會很輕鬆。",
+          ride:[
+            "從新幹線下車後：跟『Hotel／Station Hotel』指標走。",
+            "沿途看到電梯符號就上電梯，不要走手扶梯（推大行李很危險）。",
+            "到飯店櫃台：可先寄放行李，再依入住時間辦理 Check-in。"
+          ]
+        },
+        {
+          place:"小倉城庭園（只逛庭園，不進城）",
+          badge:"坐著看景",
+          img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Kokura_Castle_2019.jpg",
+          imgSource:"Wikipedia/Wikimedia",
+          map: gm("Kokura Castle Garden") ,
+          board: gm("Kokura Station") ,
+          go:"15:00 抵達後再去（先放行李/休息）",
+          stay:"60–90 分鐘（含喝茶）",
+          back:"17:00 左右回飯店或前往商場",
+          view:"廊道坐著看庭園、喝茶，有『度假感』，長輩很買單。",
+          ride:[
+            "從小倉站到庭園：計程車約 10 分鐘最省力。",
+            "想搭公車：Google 地圖用『看大眾運輸路線』會給最近站牌。"
+          ]
+        },
+        {
+          place:"RIVERWALK 北九州（紫川河岸散步）",
+          badge:"夜晚散步",
+          img: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Riverwalk_Kitakyushu_2007.jpg",
+          imgSource:"Wikipedia/Wikimedia",
+          map: gm("Riverwalk Kitakyushu") ,
+          board: gm("Kokura Station") ,
+          go:"18:00–19:30",
+          stay:"60–90 分鐘",
+          back:"20:00 前回飯店",
+          view:"沿河邊走不累，晚上氣氛很舒服。",
+          ride:[
+            "小倉站 → 計程車約 8–10 分鐘。",
+            "想走路：約 15–20 分鐘，路線平坦。"
+          ]
+        },
+        {
+          place:"焼肉の龍園 小倉本店（晚餐｜燒肉重口味）",
+          badge:"燒烤",
+          img: "https://upload.wikimedia.org/wikipedia/commons/6/64/Yakiniku.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("焼肉の龍園 小倉本店") ,
+          board: gm("Kokura Station") ,
+          tabelog: "https://tabelog.com/fukuoka/A4004/A400401/40001673/",
+          go:"19:00–20:00",
+          stay:"1.5–2 小時",
+          back:"用餐後回飯店",
+          view:"九州黑毛和牛＋熟成肉，口味夠重、很『有吃到』。",
+          ride:[
+            "小倉站 → 計程車約 8–12 分鐘最省力。",
+            "若搭大眾運輸：用卡片上的『看大眾運輸路線』看即時最省轉乘。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d227",
+      title:"2/27（五）門司港 ➜ 下關｜唐戶市場海峽大餐＋懷舊港區",
+      note:"主題：5 分鐘船過海峽、最新鮮握壽司與炸物，下午看藍翼橋開合秀。",
+      cards:[
+        {
+          place:"唐戶市場（海鮮、握壽司、炸物）",
+          badge:"海鮮",
+          img: wm("Karato_Market_20150621.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Karato Fish Market") ,
+          board: gm("Kokura Station") ,
+          go:"09:00 從小倉出發（早到選擇多）",
+          stay:"停留 1.5–2 小時",
+          back:"14:30 左右回門司港（下午走懷舊區）",
+          view:"魚市場最有活力的氛圍：買握壽司坐海邊長椅吃，超日本。",
+          flow:["小倉站","門司港站","渡船碼頭","下關（唐戶）","步行到市場"],
+          navs:[
+            {label:"導航到小倉站入口", to:"Kokura Station", mode:"walking"},
+            {label:"小倉站→門司港站（大眾運輸）", from:"Kokura Station", to:"Mojiko Station", mode:"transit"},
+            {label:"門司港站→渡船碼頭（步行導航）", from:"Mojiko Station", to:"Mojiko Port", mode:"walking"},
+            {label:"下關碼頭→唐戶市場（步行導航）", from:"Shimonoseki Port", to:"Karato Fish Market", mode:"walking"}
+          ],
+          ride:[
+            "小倉站 →（JR）→ 門司港站（Mojiko），約 15 分鐘。",
+            "門司港站出站後：步行到『關門連絡船／渡船』碼頭。",
+            "搭船：門司港 ↔ 下關（唐戶）航程約 5 分鐘。",
+            "下船後：步行即可到唐戶市場。"
+          ]
+        },
+        {
+          place:"門司港懷舊區＋藍翼橋（開合秀）",
+          badge:"拍照散步",
+          img: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Mojiko_Retro_2015.JPG",
+          imgSource:"Wikipedia/Wikimedia",
+          map: gm("Mojiko Retro") ,
+          board: gm("Mojiko Station") ,
+          go:"15:00–17:00（回到門司港後慢走）",
+          stay:"停留 1.5–2 小時",
+          back:"17:30 前回小倉",
+          view:"港區懷舊氛圍很舒服，藍翼橋開合秀很適合長輩看『儀式感』。",
+          ride:[
+            "從唐戶市場回門司港：同樣搭 5 分鐘渡船。",
+            "門司港站回小倉：JR 約 15 分鐘。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d228",
+      title:"2/28（六）小倉｜藍島（貓島）＋皿倉山百萬夜景",
+      note:"主題：白天悠閒小島（看體力/海況），傍晚纜車上山看工業夜景星海。",
+      cards:[
+        {
+          place:"藍島（Ainoshima，貓島）",
+          badge:"可選行程",
+          img: "https://upload.wikimedia.org/wikipedia/commons/9/9b/Ainoshima_harbor_2015.jpg",
+          imgSource:"Wikipedia/Wikimedia",
+          map: gm("Ainoshima Island") ,
+          board: gm("Kokura Station") ,
+          go:"09:00 前後出發（看船班為準）",
+          stay:"島上停留 2–3 小時較剛好",
+          back:"15:00 前回到小倉，預留夜景行程",
+          view:"島上節奏超慢，適合喜歡動物的長輩；若遇風浪大可直接跳過。",
+          ride:[
+            "小倉 →（交通）→ 新宮港（Shingu Port）再搭船到藍島（約 35 分鐘船程）。",
+            "提醒：船班受天候影響，當天以港口公告為準。"
+          ]
+        },
+        {
+          place:"皿倉山夜景（纜車/斜行車）",
+          badge:"夜景",
+          img: wm("Night_Views_from_Mount_Sarakura_20170527-4.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Mount Sarakura") ,
+          board: gm("Yahata Station Kitakyushu") ,
+          go:"17:00 出發上山（卡日落～全黑）",
+          stay:"停留 1–1.5 小時",
+          back:"19:30–20:00 回小倉",
+          view:"北九州工業區燈火像銀河，震撼系夜景；但山上風大要加衣。",
+          ride:[
+            "小倉站 →（JR）→ 八幡站（Yahata），約 15 分鐘。",
+            "八幡站 →（巴士/計程車）→ 皿倉山纜車山麓站。",
+            "搭乘纜車/斜行車上山到展望台。",
+            "回程同路線下山回八幡站，再回小倉。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d301",
+      title:"3/01（日）福岡｜柳川遊船＋鰻魚飯＋濃厚拉麵",
+      note:"主題：日本威尼斯式水都，長輩最愛的『優雅又不費力』，晚上回福岡再吃一碗濃的。",
+      cards:[
+        {
+          place:"柳川遊船（川下り）",
+          badge:"船",
+          img: wm("Yanagawa-kawakudari.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Yanagawa Kawakudari") ,
+          board: gm("Nishitetsu Fukuoka (Tenjin) Station") ,
+          go:"09:30 從天神出發",
+          stay:"3–4 小時（船 60 分＋午餐）",
+          back:"15:30 左右回福岡",
+          view:"船夫慢慢搖船，穿過垂柳河道，非常優雅；長輩坐著就能享受。",
+          flow:["西鐵福岡（天神）站","西鐵柳川站","乘船集合點"],
+          navs:[
+            {label:"導航到西鐵福岡（天神）站入口", to:"Nishitetsu Fukuoka (Tenjin) Station", mode:"walking"},
+            {label:"天神→西鐵柳川（大眾運輸）", from:"Nishitetsu Fukuoka (Tenjin) Station", to:"Nishitetsu Yanagawa Station", mode:"transit"},
+            {label:"柳川站→乘船處（步行/計程車）", from:"Nishitetsu Yanagawa Station", to:"Yanagawa Kawakudari", mode:"walking"}
+          ],
+          ride:[
+            "起點：西鐵『福岡（天神）站（Nishitetsu Fukuoka / Tenjin）』。",
+            "搭乘：西鐵天神大牟田線，往『西鐵柳川站（Nishitetsu Yanagawa）』，約 50 分鐘。",
+            "到站後：步行或短程計程車到乘船處（依你選的乘船公司集合點為準）。"
+          ]
+        },
+        {
+          place:"若松屋（晚餐｜柳川名物蒸籠鰻魚飯）",
+          badge:"重口味",
+          img: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Unagi_seiro_mushi.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("若松屋 柳川") ,
+          board: gm("Nishitetsu Yanagawa Station") ,
+          tabelog: "https://tabelog.com/fukuoka/A4008/A400806/40000145/",
+          go:"12:30–14:00（遊船後）",
+          stay:"60–90 分鐘",
+          back:"吃完再慢慢回站搭車",
+          view:"蒸籠鰻魚飯香氣很重、醬汁濃，長輩通常會很愛。",
+          ride:[
+            "從西鐵柳川站到店：建議計程車（省力）；或依 Google 地圖走最短路線。"
+          ]
+        },
+        {
+          place:"博多一双 博多駅東本店（晚餐備案｜濃厚豚骨）",
+          badge:"拉麵",
+          img: "https://upload.wikimedia.org/wikipedia/commons/2/27/Tonkotsu_Ramen.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("博多一双 博多駅東本店") ,
+          board: gm("Hakata Station") ,
+          tabelog: "https://tabelog.com/fukuoka/A4001/A400101/40032701/",
+          go:"回福岡後 19:00–20:30",
+          stay:"45–60 分鐘",
+          back:"吃完回飯店",
+          view:"湯頭濃到起泡、但不臭，是重口味代表。",
+          ride:[
+            "博多站步行可達；帶長輩可直接計程車到店門口。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d302",
+      title:"3/02（一）福岡｜大濠公園＋天神購物＋居酒屋／燒肉",
+      note:"主題：上午散步、下午購物；晚上選『居酒屋海鮮』或『燒肉重口味』。",
+      cards:[
+        {
+          place:"大濠公園（湖畔散步）",
+          badge:"舒適散步",
+          img: wm("Ohori_Park%2C_Fukuoka.JPG"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Ohori Park") ,
+          board: gm("Ohori Koen Station") ,
+          go:"09:30 抵達（早上空氣最好）",
+          stay:"1.5–2 小時",
+          back:"12:00 左右回天神午餐/購物",
+          view:"湖中心步道繞一圈很舒服，走累了就找咖啡坐下來看水面。",
+          ride:[
+            "從天神：搭福岡地下鐵到『大濠公園站（Ohori Koen）』，出站步行幾分鐘到湖邊。"
+          ]
+        },
+        {
+          place:"磯ぎよし 天神店（晚餐｜海鮮居酒屋）",
+          badge:"居酒屋",
+          img: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Sashimi_moriawase.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("磯ぎよし 天神店") ,
+          board: gm("Tenjin Station Fukuoka") ,
+          tabelog: "https://tabelog.com/fukuoka/A4001/A400104/40034475/",
+          go:"18:00–20:00",
+          stay:"1.5–2 小時",
+          back:"吃完回飯店",
+          view:"魚＋日本酒路線，口味不清淡，氣氛也很適合帶爸媽。",
+          ride:[
+            "天神站附近步行可達；若購物袋多，計程車最省力。"
+          ]
+        },
+        {
+          place:"焼肉 多牛 駅南店（晚餐備案｜高CP燒肉）",
+          badge:"燒烤",
+          img: "https://upload.wikimedia.org/wikipedia/commons/6/64/Yakiniku.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("焼肉 多牛 駅南店") ,
+          board: gm("Hakata Station") ,
+          tabelog: "https://tabelog.com/fukuoka/A4001/A400101/40002803/",
+          go:"18:30–21:00",
+          stay:"1.5 小時",
+          back:"用餐後回飯店",
+          view:"肉香重、份量爽，重口味族群很容易愛上。",
+          ride:[
+            "博多站步行約 5–10 分鐘；帶長輩可直接計程車。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d303",
+      title:"3/03（二）福岡｜海之中道海濱公園（花田＋小火車）",
+      note:"主題：超大自然公園，適合用『電動腳踏車或園內小火車』降低步行量。",
+      cards:[
+        {
+          place:"海之中道海濱公園",
+          badge:"花田",
+          img: wm("Park_Train_in_Uminonakamichi_Seaside_Park.jpg"),
+          imgSource:"Wikimedia Commons",
+          map: gm("Uminonakamichi Seaside Park") ,
+          board: gm("Uminonakamichi Station") ,
+          go:"09:30 從市區出發",
+          stay:"停留 3–4 小時",
+          back:"15:30–16:00 回天神",
+          view:"春季花田＋海風，園內小火車超加分；長輩不用硬走。",
+          ride:[
+            "建議到站：JR『海之中道站（Uminonakamichi Station）』步行即可到入口。",
+            "市區前往方式很多：以『天神 →（地鐵）→ 轉 JR』的路線最常見。",
+            "提醒：依你當天住宿點，Google 地圖用『大眾運輸』模式會給最省轉乘的即時路線。"
+          ]
+        }
+      ]
+    },
+
+    {
+      id:"d304",
+      title:"3/04（三）回程｜天神 → 福岡機場",
+      note:"主題：吃完最後一頓好料，用『計程車 15 分鐘』把風險降到最低。",
+      cards:[
+        {
+          place:"天神 → 福岡機場（建議計程車）",
+          badge:"返家",
+          img: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Fukuoka_Airport_International_Terminal_2019.jpg",
+          imgSource:"Wikipedia/Wikimedia",
+          map: gm("Fukuoka Airport") ,
+          board: gm("Tenjin Fukuoka") ,
+          go:"依班機時間倒推：起飛前 2 小時到機場較安心",
+          stay:"—",
+          back:"—",
+          view:"用計程車把轉乘壓力歸零，長輩心情會很好（也比較不會把氣出在你身上）。",
+          ride:[
+            "從天神搭計程車到福岡機場：車程約 15–20 分鐘（視交通）。",
+            "若改搭地鐵：天神站可直達福岡機場站，但帶長輩＋行李時計程車最省心。"
+          ]
+        }
+      ]
+    }
+  ];
+
+  const tabs = document.getElementById('tabs');
+  const app = document.getElementById('app');
+
+  function render(activeId){
+    tabs.innerHTML = data.map(d=>{
+      const cls = d.id===activeId?"tab active":"tab";
+      return `<button class="${cls}" onclick="setDay('${d.id}')">${d.title.split('｜')[0]}</button>`;
+    }).join('');
+
+    const day = data.find(d=>d.id===activeId) || data[0];
+    app.innerHTML = `
+      <section class="day">
+        <h2>${day.title}</h2>
+        <p class="meta">${day.note}</p>
+        <div class="grid">
+          ${day.cards.map(c=>cardHtml(c)).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  function cardHtml(c){
+    const flow = (c.flow||[]);
+    const flowHtml = flow.length ? `
+      <div style="margin:10px 0 6px">
+        <div style="color:var(--muted);font-size:12px;margin:0 0 8px">搭車圖解（照這個順序走）</div>
+        <div style="display:flex;align-items:center;gap:8px;overflow:auto;padding-bottom:6px">
+          ${flow.map((s,i)=>`
+            <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:22px;height:22px;border-radius:999px;background:rgba(125,211,252,.12);border:1px solid rgba(125,211,252,.35);display:flex;align-items:center;justify-content:center;font-size:12px">${i+1}</div>
+                <div style="font-size:12px;color:#d8deea">${escapeHtml(s)}</div>
+              </div>
+              ${i===flow.length-1?"":"<div style='color:rgba(154,163,178,.6)'>→</div>"}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    ` : '';
+
+    const navs = (c.navs||[]);
+    // navs: [{label, to, mode, from?}]
+    const navHtml = navs.length ? `
+      <div class="row" style="margin-top:10px">
+        ${navs.map(n=>`
+          <a class="btn" href="${gdir({from:n.from, to:n.to, mode:n.mode||'transit'})}" target="_blank" rel="noopener">${escapeHtml(n.label)}</a>
+        `).join('')}
+      </div>
+      <div style="color:var(--muted);font-size:12px;margin-top:2px;line-height:1.5">
+        提醒：如果你在車站內迷路，直接點「導航到搭車點」，跟著藍色點走到入口，再看現場指示牌。
+      </div>
+    ` : '';
+
+    return `
+    <article class="card">
+      <div class="img">
+        <img src="${c.img}" alt="${escapeHtml(c.place)}" loading="lazy" referrerpolicy="no-referrer" />
+      </div>
+      <div class="content">
+        <div class="title">
+          <h3>${escapeHtml(c.place)}</h3>
+          <span class="badge">${escapeHtml(c.badge||"")}</span>
+        </div>
+        <div class="desc">${escapeHtml(c.view||"")}</div>
+
+        <div class="chipline">
+          <span class="chip">建議出發：${escapeHtml(c.go||"—")}</span>
+          <span class="chip">停留：${escapeHtml(c.stay||"—")}</span>
+          <span class="chip">回程：${escapeHtml(c.back||"—")}</span>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <a class="btn primary" href="${c.map}" target="_blank" rel="noopener">導航到景點</a>
+          <a class="btn good" href="${c.board}" target="_blank" rel="noopener">導航到搭車點</a>
+          <a class="btn" href="${c.map}&travelmode=transit" target="_blank" rel="noopener">看大眾運輸路線</a>
+          ${c.tabelog ? `<a class=\"btn\" href=\"${c.tabelog}\" target=\"_blank\" rel=\"noopener\">Tabelog</a>` : ``}
+        </div>
+
+        ${flowHtml}
+        ${navHtml}
+
+        <details>
+          <summary>搭車方式（一步一步）</summary>
+          <div class="info">
+            ${ (c.ride||[]).map(x=>`• ${escapeHtml(x)}`).join('<br/>') }
+            <div style="margin-top:10px;color:var(--muted);font-size:12px">
+              圖片來源：${escapeHtml(c.imgSource||"")}（僅作為視覺參考）。
+            </div>
+          </div>
+        </details>
+      </div>
+    </article>`;
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+  }
+
+  window.setDay = (id)=>{
+    history.replaceState(null,"",`#${id}`);
+    render(id);
+  };
+
+  const initial = location.hash?.replace('#','') || data[0].id;
+  render(data.some(d=>d.id===initial)?initial:data[0].id);
 </script>
 </body>
 </html>
