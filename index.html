@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>2/23–3/04 行程（長輩可點版）</title>
+  <title>老爸老媽自由行｜2/23–3/04</title>
   <style>
     :root{
       --bg:#0b0c10; --card:#12141b; --muted:#9aa3b2; --text:#eef2ff;
@@ -59,7 +59,7 @@
 <body>
   <header>
     <div class="wrap">
-      <h1>2/23–3/04 行程（手機可點、長輩好懂）</h1>
+      <h1>老爸老媽自由行｜2/23–3/04（手機可點、長輩好懂）</h1>
       <p class="sub">每站：圖片＋導航＋搭車步驟＋建議出發/回程＋停留時間。平台可能臨時調整，抵達車站後以現場指示牌與站務公告為準。</p>
     </div>
     <div class="tabs" id="tabs"></div>
@@ -215,9 +215,38 @@
 
     {
       id:"d226",
-      title:"2/26（四）小倉｜移動＋庭園午茶＋河岸散步",
-      note:"主題：新幹線移動日（名古屋→小倉），下午走輕鬆路線。",
+      title:"2/26（四）小倉｜名古屋→小倉（帶行李）＋庭園午茶＋河岸散步",
+      note:"主題：新幹線移動日（2人＋2大行李箱）—『電梯/出口』版本，下午走輕鬆路線。",
       cards:[
+        {
+          place:"名古屋 → 小倉（JR Pass／帶大行李箱｜電梯＆出口動線）",
+          badge:"移動教學",
+          img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Shinkansen_N700A_series.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("JR Nagoya Station") ,
+          board: gm("Nagoya Station Taiko-dori Exit") ,
+          go:"建議 08:30 抵達名古屋站（先把行李動線走順）",
+          stay:"新幹線約 2 小時 50 分（含停靠）",
+          back:"中午前後抵達小倉 → 先進飯店放行李",
+          view:"你們兩個＋兩個大行李箱，今天的關鍵是：『入口選對＋全程走電梯符號』。",
+          flow:["名古屋站 太閤通口（Taiko-dori／西側）","新幹線改札（靠近銀時計）","電梯上新幹線月台","小倉站 新幹線側（北口/新幹線口）","電梯→連通通道→JR Station Hotel Kokura"],
+          navs:[
+            {label:"導航到名古屋站太閤通口（西側）", to:"Nagoya Station Taiko-dori Exit", mode:"walking"},
+            {label:"名古屋→小倉（大眾運輸）", from:"JR Nagoya Station", to:"Kokura Station", mode:"transit"},
+            {label:"導航到小倉站新幹線口（北口）", to:"Kokura Station Shinkansen Exit", mode:"walking"},
+            {label:"小倉站→JR Station Hotel Kokura（步行）", from:"Kokura Station", to:"JR Kyushu Station Hotel Kokura", mode:"walking"}
+          ],
+          ride:[
+            "【名古屋站怎麼進站（最順）】請從『太閤通口 Taiko-dori（西側）』進入，離新幹線區最近，推行李最省力。",
+            "【找新幹線改札】進站後看『新幹線 Shinkansen』指標，朝『銀時計（Silver Clock）』方向走，這一帶就是新幹線票口/改札。",
+            "【JR Pass 劃位＋大行李箱】到綠色窗口（みどりの窓口）用 JR Pass 劃位時，直接說：『2個大行李箱，想要最後一排（oversized baggage area）』。",
+            "【超大行李規則】若行李三邊合計超過 160cm，建議一定要劃『超大行李區座位』；沒劃位可能被收費並被要求移動行李。",
+            "【上月台】過改札後全程跟『電梯/無障礙（輪椅）』符號走到月台，避免扛行李走樓梯。",
+            "【到小倉站】下車後先找『新幹線側（北口/新幹線口）』方向，跟著電梯下到連通層。",
+            "【到飯店】JR Station Hotel Kokura 是車站直結（在站體上方），照『Hotel / Station Hotel』指標走，基本上 1–3 分鐘可到；全程可走電梯。",
+            "【車上放行李】能放座位上方就放上方；太大就放最後一排後方行李空間（需劃位）。"
+          ]
+        },
         {
           place:"小倉城庭園（只逛庭園，不進城）",
           badge:"坐著看景",
@@ -230,7 +259,7 @@
           back:"17:00 左右回飯店或前往商場",
           view:"廊道坐著看庭園、喝茶，有『度假感』，長輩會很買單。",
           ride:[
-            "新幹線抵達小倉站後：選『車站直結飯店』先放行李。",
+            "新幹線抵達小倉站後：先回車站直結飯店放行李。",
             "從小倉站到小倉城庭園：計程車約 10 分鐘；或搭公車到『小倉城／市役所前』附近再步行。"
           ]
         },
@@ -247,6 +276,23 @@
           view:"造型很有個性，沿河邊走不累，晚上氣氛浪漫但不吵。",
           ride:[
             "從小倉站：步行約 15–20 分鐘；或計程車約 8–10 分鐘。"
+          ]
+        },
+        {
+          place:"焼肉の龍園 小倉本店（晚餐｜燒肉重口味）",
+          badge:"燒烤",
+          img: "https://upload.wikimedia.org/wikipedia/commons/6/64/Yakiniku.jpg",
+          imgSource:"Wikimedia Commons",
+          map: gm("焼肉の龍園 小倉本店") ,
+          board: gm("Kokura Station") ,
+          tabelog: "https://s.tabelog.com/tw/fukuoka/A4004/A400401/40001673/",
+          go:"19:00–20:00",
+          stay:"停留 1.5–2 小時",
+          back:"用餐後回飯店",
+          view:"九州黑毛和牛＋熟成肉，口味夠重、長輩會覺得『有吃到』。",
+          ride:[
+            "小倉站 → 計程車約 8–12 分鐘最省力（帶長輩＋行李很值得）。",
+            "若搭大眾運輸：用卡片上的『看大眾運輸路線』讓 Google 給當天最省轉乘的即時路線。"
           ]
         }
       ]
@@ -523,6 +569,7 @@
           <a class="btn primary" href="${c.map}" target="_blank" rel="noopener">導航到景點</a>
           <a class="btn good" href="${c.board}" target="_blank" rel="noopener">導航到搭車點</a>
           <a class="btn" href="${c.map}&travelmode=transit" target="_blank" rel="noopener">看大眾運輸路線</a>
+          ${c.tabelog ? `<a class="btn" href="${c.tabelog}" target="_blank" rel="noopener">Tabelog</a>` : ``}
         </div>
 
         ${flowHtml}
